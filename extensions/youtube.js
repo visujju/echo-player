@@ -1,3 +1,16 @@
+const yts = require('yt-search');
+
+async function searchYouTube(query) {
+    const r = await yts(query);
+    return r.videos.map(v => ({
+        title: v.title,
+        videoId: v.videoId,
+        duration: v.timestamp,
+        thumbnail: v.thumbnail
+    }));
+}
+
+module.exports = { searchYouTube };
 const { execFile } = require('child_process');
 
 module.exports = {
