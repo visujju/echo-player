@@ -1,0 +1,31 @@
+const axios = require('axios');
+
+module.exports = {
+  id: "saavn",
+  name: "Saavn Music",
+  icon: "🎵",
+
+  async search(query) {
+    const url = `https://www.jiosaavn.com/api.php?__call=autocomplete.get&query=${encodeURIComponent(query)}&_format=json&_marker=0&ctx=android`;
+    const res = await axios.get(url);
+    const songs = res.data?.songs?.data || [];
+
+    return songs.map(song => ({
+      id: song.id,
+      title: song.title.replace(/&quot;/g, '"').replace(/&#039;/g, "'"),
+      artist: song.more_info?.singers || song.description || "",
+      image: song.image ? song.image.replace("50x50", "500x500") : ""
+    }));
+  },
+
+  async getStream(id) {
+    const url = `https://www.jiosaavn.com/api.php?__call=song.getDetails&pids=${id}&_format=json&_marker=0&ctx=android`;
+    const res = await axios.get(url);
+    const songData = res.data[id];
+    const mediaUrl = songData?.more_info?.media_preview_url || songData?.media_preview_url;
+    if (!mediaUrl) throw new Error("Stream URL not found");
+
+    return mediaUrl.replace("preview.saavncdn.com", "aac.saavncdn.com").replace("_96_p.mp4", "_160.mp4");
+  }
+};
+

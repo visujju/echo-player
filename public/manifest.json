@@ -1,0 +1,15 @@
+{
+  "name": "Echo Music",
+  "short_name": "Echo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090f",
+  "theme_color": "#09090f",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/512/c5b8ff/000000?text=E",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
